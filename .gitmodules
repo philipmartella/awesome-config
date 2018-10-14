@@ -1,0 +1,6 @@
+[submodule "themes/fleet"]
+	path = themes/fleet
+	url = https://github.com/dustinmartella/fleet-theme.git
+[submodule "fleet"]
+	path = fleet
+	url = https://github.com/dustinmartella/fleet.git
