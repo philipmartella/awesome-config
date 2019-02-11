@@ -1381,12 +1381,14 @@ awful.rules.rules = {
 			},
 			class = {
 				"Arandr",
+				"Nm-connection-editor",
 			},
 			name = {
 				"Event Tester", -- xev.
 			},
 		},
 		properties = {
+			floating = true,
 			titlebars_enabled = true
 		},
 	},
