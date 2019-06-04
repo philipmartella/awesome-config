@@ -6,6 +6,8 @@ require("awful.autofocus")
 local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
+-- HiDPI handling
+local dpi = require("beautiful").xresources.apply_dpi
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
@@ -121,7 +123,7 @@ local function client_menu_toggle_fn()
 			instance:hide()
 			instance = nil
 		else
-			instance = awful.menu.clients({ theme = { width = 400 } }, {}, fleet.widget.client_control.filter.currenttags)
+			instance = awful.menu.clients({ theme = { width = dpi(400) } }, {}, fleet.widget.client_control.filter.currenttags)
 		end
 	end
 end
@@ -292,11 +294,11 @@ local function swap_swappable (s, pos)
 end
 
 local function wrap_widget_vmargin (widget)
-	return wibox.container.margin(widget, 0, 0, 2, 2)
+	return wibox.container.margin(widget, 0, 0, dpi(2), dpi(2))
 end
 
 local function wrap_widget_hmargin (widget)
-	return wibox.container.margin(widget, 2, 2, 0, 0)
+	return wibox.container.margin(widget, dpi(2), dpi(2), 0, 0)
 end
 
 local function wrap_widget_margin (widget)
@@ -307,10 +309,10 @@ local function wrap_widget (w)
 	return wrap_widget_hmargin(wibox.widget {
 		{
 			w,
-			left = 4,
-			right = 4,
-			top = 2,
-			bottom = 2,
+			left = dpi(4),
+			right = dpi(4),
+			top = dpi(2),
+			bottom = dpi(2),
 			widget = wibox.container.margin
 		},
 		shape = gears.shape.rectangle,
@@ -381,7 +383,7 @@ mylauncher = awful.widget.launcher({
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
-menubar.geometry = { y = 0, height = 22 }
+menubar.geometry = { y = 0, height = dpi(22) }
 -- }}}
 
 -- {{{ Wibar Widgets
@@ -748,7 +750,7 @@ awful.screen.connect_for_each_screen(function(s)
 	awful.button({ }, 5, function () awful.layout.inc(-1) end)))
 
 	-- Create a taglist widget
-	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons, {spacing = 4})
+	s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons, {spacing = dpi(4)})
 
 	-- Create a tasklist widget
 	s.mytasklist = awful.widget.tasklist(s, fleet.widget.client_control.filter.currenttagsnotfocused, tasklist_buttons, {
@@ -756,7 +758,7 @@ awful.screen.connect_for_each_screen(function(s)
 	}, fleet.common.list_update)
 
 	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", height = 28, ontop = true, bg = "#000000AA", screen = s })
+	s.mywibox = awful.wibar({ position = "top", height = dpi(28), ontop = true, bg = "#000000AA", screen = s })
 
 	-- Client control
 	s.clientcontrols = fleet.widget.client_control(s, {
@@ -905,7 +907,7 @@ awful.screen.connect_for_each_screen(function(s)
 				s.clientcontrols.widget.maximizedbutton,
 				s.clientcontrols.widget.stickybutton,
 				s.clientcontrols.widget.ontopbutton,
-				spacing = 4,
+				spacing = dpi(4),
 				layout = wibox.layout.fixed.horizontal
 			},
 			wrap_widget_vmargin(bar),
@@ -938,10 +940,10 @@ awful.screen.connect_for_each_screen(function(s)
 			swappable_widget(s, s.myclientcontrol, combwidget),
 			layout = wibox.layout.align.horizontal
 		},
-		left = 2,
-		right = 2,
-		top = 2,
-		bottom = 4,
+		left = dpi(2),
+		right = dpi(2),
+		top = dpi(2),
+		bottom = dpi(4),
 		widget = wibox.container.margin
 	}
 
@@ -1485,7 +1487,7 @@ client.connect_signal("request::titlebars", function(c)
 				awful.titlebar.widget.maximizedbutton(c),
 				awful.titlebar.widget.stickybutton(c),
 				awful.titlebar.widget.ontopbutton(c),
-				spacing = 4,
+				spacing = dpi(4),
 				layout = wibox.layout.fixed.horizontal()
 			},
 			wrap_widget_vmargin(bar),
@@ -1494,7 +1496,7 @@ client.connect_signal("request::titlebars", function(c)
 		},
 	}
 
-	awful.titlebar(c, {size = 22}) : setup {
+	awful.titlebar(c, {size = dpi(22)}) : setup {
 		wrap_widget_hmargin(titlebar.icon),
 		wrap_widget_hmargin(titlebar.title),
 		wrap_widget_hmargin(titlebar.control),
