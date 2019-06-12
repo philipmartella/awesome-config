@@ -401,7 +401,7 @@ kbdlayout = fleet.widget.keyboard_layout_control({
 kbdleds = fleet.widget.keyboard_key_control({
 	led_on = '#8AE181',
 	position = 'top_right',
-	font = 'xos4 Terminus:style=Bold:size=10',
+	font = 'xos4 Terminus:style=Bold:size=' .. tostring(dpi(10)),
 	keys = {
 		{ name = ' 1 ', key = 'Num_Lock', led = 'Num Lock' },
 		{ name = ' A ', key = 'Caps_Lock', led = 'Caps Lock' }
@@ -583,7 +583,7 @@ diowidget = wibox.widget {
 }
 
 vicious.register(diowidget, vicious.widgets.dio, function (widget, args)
-	local dev = 'sda'
+	local dev = 'nvme0n1'
 	local d_c = '#777777'
 	local r_s = 0
 	local w_s = 0
@@ -1151,10 +1151,13 @@ globalkeys = awful.util.table.join(
 	{description="show help", group="awesome"}),
 
 	-- Standard program
+	awful.key({}, "XF86AudioMute", function() volumecontrol:toggle() end),
 	awful.key({}, "XF86AudioRaiseVolume", function() volumecontrol:up() end),
 	awful.key({}, "XF86AudioLowerVolume", function() volumecontrol:down() end),
-	awful.key({}, "XF86AudioMute", function() volumecontrol:toggle() end),
+	awful.key({}, "XF86MonBrightnessDown", function () awful.spawn("xbacklight -dec 10") end),
+	awful.key({}, "XF86MonBrightnessUp", function () awful.spawn("xbacklight -inc 10") end),
 	awful.key({}, "XF86ScreenSaver", function () awful.spawn(lockscreen_cmd) end),
+	awful.key({}, "XF86Sleep", function () awful.spawn("systemctl suspend") end),
 	awful.key({}, "Num_Lock", function() kbdleds:update_key('Num_Lock') end),
 	awful.key({}, "Caps_Lock", function() kbdleds:update_key('Caps_Lock') end),
 	awful.key({}, "Print", function () awful.spawn(screenshot) end),
@@ -1363,6 +1366,7 @@ awful.rules.rules = {
 				"Gtk-recordMyDesktop",
 				"Wallp",
 				"Nautilus",
+				"Evolution-alarm-notify",
 			},
 			role = {
 				"AlarmWindow", -- Thunderbird's calendar.
