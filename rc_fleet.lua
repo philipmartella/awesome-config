@@ -583,7 +583,7 @@ diowidget = wibox.widget {
 }
 
 vicious.register(diowidget, vicious.widgets.dio, function (widget, args)
-	local dev = 'nvme0n1'
+	local dev = machine.drive
 	local d_c = '#777777'
 	local r_s = 0
 	local w_s = 0
