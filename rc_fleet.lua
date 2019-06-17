@@ -391,23 +391,34 @@ menubar.geometry = { y = 0, height = dpi(22) }
 bar = wibox.widget.imagebox()
 bar:set_image(beautiful.bar)
 
-batwidget = wibox.widget.progressbar()
 
--- Create wibox with batwidget
-batbox = wibox.layout.margin(
-	wibox.widget{{max_value = 1, widget = batwidget,
-			border_width = 0.5, border_color = "#000000",
-			color = {type = "linear",
-				from = {0, 0},
-				to = {0, 30},
-		stops = {{0, "#AECF96"}, {1, "#FF5656"}}}},
-		forced_height = 10, forced_width = 8,
-		direction = 'east', color = beautiful.fg_widget,
-	layout = wibox.container.rotate},
-	1, 1, 3, 3)
 
--- Register battery widget
-vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
+
+-- Battery
+batwidget = wibox.widget {
+	{
+		id = "perc",
+		markup = '<span color="#FFFFFF">**</span>',
+		widget = wibox.widget.textbox,
+	},
+	layout = wibox.layout.fixed.horizontal
+}
+
+vicious.register(batwidget.perc, vicious.widgets.bat, function (widget, args)
+	local color = '#E18181'
+	local perc = tostring(args[2])
+
+	if args[2] < 10 then
+		perc = '0'..tostring(args[2])
+	elseif args[2] > 10 then
+		color = '#8AE181'
+	end
+
+	return '<span color="'..color..'">'..perc..'</span> %'
+end, 61, "BAT0")
+
+
+
 
 -- Keyboard map indicator and switcher
 kbdlayout = fleet.widget.keyboard_layout_control({
@@ -935,7 +946,7 @@ awful.screen.connect_for_each_screen(function(s)
 			{ -- Left widgets
 				wrap_widget_hmargin(mylauncher),
 				--wrap_widget_hmargin(mysesslauncher),
-				--wrap_widget_hmargin(batwidget),
+				wrap_widget_hmargin(batwidget),
 				wrap_widget_vmargin(bar),
 				wrap_widget_hmargin(s.mytaglist),
 				wrap_widget_vmargin(bar),
