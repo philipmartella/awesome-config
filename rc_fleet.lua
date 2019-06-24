@@ -391,34 +391,46 @@ menubar.geometry = { y = 0, height = dpi(22) }
 bar = wibox.widget.imagebox()
 bar:set_image(beautiful.bar)
 
-
-
-
 -- Battery
 batwidget = wibox.widget {
 	{
-		id = "perc",
-		markup = '<span color="#FFFFFF">**</span>',
-		widget = wibox.widget.textbox,
+		id = "baticon",
+		image = beautiful.battery_icon,
+		widget = wibox.widget.imagebox,
 	},
 	layout = wibox.layout.fixed.horizontal
 }
 
-vicious.register(batwidget.perc, vicious.widgets.bat, function (widget, args)
-	local color = '#E18181'
-	local perc = tostring(args[2])
+battooltip = awful.tooltip {
+	objects = { batwidget },
+	text = "0% - 00:00 remaining",
+}
 
-	if args[2] < 10 then
-		perc = '0'..tostring(args[2])
-	elseif args[2] > 10 then
-		color = '#8AE181'
+vicious.register(batwidget, vicious.widgets.bat, function (widget, args)
+	local baticon = beautiful.battery_empty
+	local state = args[1]
+	local perc = args[2]
+	local remaining = args[3]
+
+	battooltip.text = perc .. "% - " .. remaining .. " remaining"
+
+	if perc > 99 then
+		baticon = beautiful.battery_full
+	elseif perc > 65 then
+		baticon = beautiful.battery_high
+	elseif perc > 35 then
+		baticon = beautiful.battery_medium
+	elseif perc > 15 then
+		baticon = beautiful.battery_low
+	elseif perc > 5 then
+		baticon = beautiful.battery_empty
+	else
+		baticon = beautiful.battery_critical
 	end
 
-	return '<span color="'..color..'">'..perc..'</span> %'
-end, 61, "BAT0")
+	widget.baticon.image = baticon
 
-
-
+end, 30, "BAT0")
 
 -- Keyboard map indicator and switcher
 kbdlayout = fleet.widget.keyboard_layout_control({
