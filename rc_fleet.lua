@@ -1422,6 +1422,8 @@ awful.rules.rules = {
 			class = {
 				"Arandr",
 				"Nm-connection-editor",
+				"MPlayer",
+				"vdpau",
 			},
 			name = {
 				"Event Tester", -- xev.
@@ -1444,8 +1446,6 @@ awful.rules.rules = {
 				"Gpick",
 				"Sxiv",
 				"Wpa_gui",
-				"MPlayer",
-				"vdpau",
 			},
 			name = {
 				"Blender User Preferences",
