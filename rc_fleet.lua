@@ -359,6 +359,11 @@ mywmmenu = {
 	{ "lock screen", lockscreen_cmd },
 }
 
+myscreenmenu = {
+	{ "Clone", "xrandr" },
+	{ "Expand", "xrandr" }
+}
+
 mymainmenu = awful.menu({
 	items = {
 		{ "session", mysessmenu },
