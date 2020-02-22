@@ -238,12 +238,17 @@ end
 local function adjust_client_border (c)
 	if c.fullscreen or c.maximized == true or (c.maximized_horizontal == true and c.maximized_vertical == true) then
 		c.border_width = 0
+		awful.titlebar.hide(c)
 
 	--	c.shape = function (cr, w, h)
 	--	 gears.shape.rectangle(cr, w, h)
 	--	end
 	else
 		c.border_width = beautiful.border_width
+
+		if not c.requests_no_titlebar then
+			awful.titlebar.show(c)
+		end
 
 	--	c.shape = function (cr, w, h)
 			-- gears.shape.rectangle(cr, w, h)
@@ -1446,6 +1451,8 @@ awful.rules.rules = {
 				"seahorse",
 				"DTA", -- Firefox addon DownThemAll.
 				"Devtools",-- Firefox Devtools Window.
+				"sun-awt-X11-XDialogPeer",
+				"sun-awt-X11-XFramePeer",
 			},
 			class = {
 				"Gpick",
