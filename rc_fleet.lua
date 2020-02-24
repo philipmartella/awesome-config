@@ -47,6 +47,7 @@ end
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/themes/fleet/theme.lua")
 
 terminal = "urxvt" or "terminology" or "terminator" or "gnome-terminal" or "xterm"
+browser = "firefox" or "chromium" or "epiphany"
 editor = os.getenv("EDITOR") or "vim" or "vi" or "nano"
 
 editor_cmd = terminal .. " -e " .. editor
@@ -372,6 +373,7 @@ mymainmenu = awful.menu({
 	--	{ "awesome", myawesomemenu, beautiful.awesome_icon },
 		{ "desktop", mywmmenu },
 		{ "open terminal", terminal },
+		{ "open browser", browser },
 		{ "take screenshot", screenshot },
 		{ "lock screen", lockscreen_cmd },
 	}
@@ -408,7 +410,7 @@ batwidget = wibox.widget {
 
 battooltip = awful.tooltip {
 	objects = { batwidget },
-	text = "0% - 00:00 remaining",
+	text = "0% - unknown (00:00 remaining)",
 }
 
 vicious.register(batwidget, vicious.widgets.bat, function (widget, args)
@@ -416,8 +418,10 @@ vicious.register(batwidget, vicious.widgets.bat, function (widget, args)
 	local state = args[1]
 	local perc = args[2]
 	local remaining = args[3]
+	local batstate = ( state == "+" and "charging" or "discharging" )
+	local timestate = ( state == "+" and "until charged" or "remaining" )
 
-	battooltip.text = perc .. "% - " .. remaining .. " remaining"
+	battooltip.text = perc .. "% - " .. batstate .. " (" .. remaining .. " " .. timestate .. ")"
 
 	if perc > 99 then
 		baticon = beautiful.battery_full
